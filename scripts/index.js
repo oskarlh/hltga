@@ -2,8 +2,6 @@ const sharp = require("sharp");
 const fs = require("fs");
 const process = require("process");
 
-const width = 32;
-const height = 32;
 
 if(process.argv.length !== 4) {
 	console.error("Wrong number of command line arguments. You need to specify an input file and an output file");
@@ -12,8 +10,8 @@ if(process.argv.length !== 4) {
 const inputPath = process.argv[2];
 const outputPath = process.argv[3];
 
-sharp(fs.readFileSync(inputPath)).resize(width, height).raw().toBuffer({resolveWithObject: true}).then(({data, info}) => {
-	const channels = info.channels;
+sharp(fs.readFileSync(inputPath)).raw().toBuffer({resolveWithObject: true}).then(({data, info}) => {
+	const { channels, width, height } = info;
 	const alpha = channels === 4;
 	if(!alpha && channels !== 3) {
 		console.error("Wrong number of channels. 3 or 4 needed");
